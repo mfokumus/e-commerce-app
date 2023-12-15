@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProducts } from "../../redux/productSlice";
+import { getCategoryProduct, getProducts } from "../../redux/productSlice";
 import Loading from "../Loading";
 import Product from "./Product";
 import ReactPaginate from "react-paginate";
 
-const Products = () => {
-
+const Products = ({ category, sort }) => {
   const dispatch = useDispatch();
   const { products, productsStatus } = useSelector((state) => state.products);
 
   const [itemOffset, setItemOffset] = useState(0);
-
   // Simulate fetching items from another resources.
   // (This could be items from props; or items loaded in a local state
   // from an API endpoint with useEffect and useState)
-  const itemsPerPage = 6
+  const itemsPerPage = 6;
   const endOffset = itemOffset + itemsPerPage;
   console.log(`Loading items from ${itemOffset} to ${endOffset}`);
   const currentItems = products.slice(itemOffset, endOffset);
@@ -30,12 +28,16 @@ const Products = () => {
     setItemOffset(newOffset);
   };
 
- 
-  console.log(products, "products");
+  console.log(sort, "sort");
 
+  //sayfa her yüklendiğinde ürünleri al ve artık gelen categorye göre al
   useEffect(() => {
-    dispatch(getProducts());
-  }, [dispatch]);
+    if (category) {
+      dispatch(getCategoryProduct(category));
+    } else {
+      dispatch(getProducts());
+    }
+  }, [dispatch, category]);
 
   return (
     <div>
@@ -44,9 +46,17 @@ const Products = () => {
       ) : (
         <>
           <div className="flex flex-wrap">
-            {currentItems?.map((product, i) => (
-              <Product key={i} product={product} />
-            ))}
+            {currentItems
+              ?.sort((a, b) =>
+                sort == "inc"
+                  ? a.price - b.price
+                  : sort == "dec"
+                  ? b.price - a.price
+                  : ""
+              )
+              .map((product, i) => (
+                <Product key={i} product={product} />
+              ))}
           </div>
           <ReactPaginate
             className="paginate"
