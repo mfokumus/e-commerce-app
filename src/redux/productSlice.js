@@ -27,7 +27,7 @@ export const getDetailProduct = createAsyncThunk("getproduct", async (id) => {
 });
 
 const productSlice = createSlice({
-  name: "producs",
+  name: "products",
   initialState,
   reducers: {},
   // Burada bir api işlemi gerçekleştiği için extraReducer kullanıyoruz

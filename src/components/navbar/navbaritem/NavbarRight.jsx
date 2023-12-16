@@ -17,7 +17,6 @@ const NavbarRight = () => {
     dispatch(getCartTotal())
   },[dispatch])
 
-  console.log(carts, "carts")
   return (
     <div className='flex items-center gap-8'>
         <div className='flex items-center border p-3 rounded-full bg-gray-200'>
