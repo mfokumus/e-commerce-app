@@ -1,6 +1,8 @@
 import React from "react";
 import Slider from "react-slick";
 
+
+//https://react-slick.neostack.com/
 const SliderComp = () => {
   var settings = {
     infinite: true,
